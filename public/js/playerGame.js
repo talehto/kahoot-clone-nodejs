@@ -7,9 +7,11 @@ var score = 0;
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 socket.on('connect', function() {
+    console.log("connect to the game")
     //Tell server that it is host connection from game view
     socket.emit('player-join-game', params);
     
+    document.getElementById('question').style.visibility = "visible";
     document.getElementById('answer1').style.visibility = "visible";
     document.getElementById('answer2').style.visibility = "visible";
     document.getElementById('answer3').style.visibility = "visible";
@@ -27,6 +29,7 @@ function answerSubmitted(num){
         socket.emit('playerAnswer', num);//Sends player answer to server
         
         //Hiding buttons from user
+        document.getElementById('question').style.visibility = "hidden";
         document.getElementById('answer1').style.visibility = "hidden";
         document.getElementById('answer2').style.visibility = "hidden";
         document.getElementById('answer3').style.visibility = "hidden";
@@ -44,6 +47,22 @@ socket.on('answerResult', function(data){
     }
 });
 
+socket.on('gameQuestionToPlayer', function(data){
+    console.log("gameQuestionToPlayer called")
+
+    var questionStr = data.q
+    if(data.q.includes('image:')){
+        var n = data.q.indexOf("image:");
+        questionStr = data.q.substr(0,n); 
+    }
+
+    document.getElementById('question').innerHTML = questionStr;
+    document.getElementById('answer1').innerHTML = data.a1;
+    document.getElementById('answer2').innerHTML = data.a2;
+    document.getElementById('answer3').innerHTML = data.a3;
+    document.getElementById('answer4').innerHTML = data.a4;
+});
+
 socket.on('questionOver', function(data){
     if(correct == true){
         document.body.style.backgroundColor = "#4CAF50";
@@ -54,6 +73,7 @@ socket.on('questionOver', function(data){
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Incorrect!";
     }
+    document.getElementById('question').style.visibility = "hidden";
     document.getElementById('answer1').style.visibility = "hidden";
     document.getElementById('answer2').style.visibility = "hidden";
     document.getElementById('answer3').style.visibility = "hidden";
@@ -68,7 +88,8 @@ socket.on('newScore', function(data){
 socket.on('nextQuestionPlayer', function(){
     correct = false;
     playerAnswered = false;
-    
+
+    document.getElementById('question').style.visibility = "visible";
     document.getElementById('answer1').style.visibility = "visible";
     document.getElementById('answer2').style.visibility = "visible";
     document.getElementById('answer3').style.visibility = "visible";
@@ -93,6 +114,7 @@ socket.on('playerGameData', function(data){
 
 socket.on('GameOver', function(){
     document.body.style.backgroundColor = "#FFFFFF";
+    document.getElementById('question').style.visibility = "hidden";
     document.getElementById('answer1').style.visibility = "hidden";
     document.getElementById('answer2').style.visibility = "hidden";
     document.getElementById('answer3').style.visibility = "hidden";

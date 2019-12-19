@@ -18,7 +18,22 @@ socket.on('noGameFound', function(){
 });
 
 socket.on('gameQuestions', function(data){
-    document.getElementById('question').innerHTML = data.q1;
+    console.log("data.q1: " + data.q1)
+    var questionStr = data.q1
+    if(data.q1.includes('image:')){
+        console.log("here we go")
+        var n = data.q1.indexOf("image:");
+        questionStr = data.q1.substr(0,n) 
+        var imgStr = data.q1.substr(n+6,data.q1.len)
+        console.log("imgStr: " + imgStr)
+        var elem = document.createElement("img");
+        elem.setAttribute("id", "questionImg2");
+        //elem.setAttribute("height", "768");
+        //elem.setAttribute("width", "1024");
+        elem.setAttribute("src", "http://localhost:3000/uploads/" + imgStr);
+        document.getElementById("questionImg").appendChild(elem);
+    }
+    document.getElementById('question').innerHTML = questionStr;
     document.getElementById('answer1').innerHTML = data.a1;
     document.getElementById('answer2').innerHTML = data.a2;
     document.getElementById('answer3').innerHTML = data.a3;
@@ -104,6 +119,10 @@ socket.on('questionOver', function(playerData, correct){
 });
 
 function nextQuestion(){
+    var imgElem = document.getElementById("questionImg2")
+    if(typeof(imgElem) != 'undefined' && imgElem != null){
+        imgElem.remove()
+    }
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('square1').style.display = "none";
     document.getElementById('square2').style.display = "none";

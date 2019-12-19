@@ -7,7 +7,7 @@
     </head>
     <body onload = "setBGColor()">
         <h1 id = "title">Kahoot Quiz Creator Studio</h1>
-        
+
         <div class="form-field">
             <label id = "quizTitle">Quiz Title</label>
             <input id = "name" type = "text" name="name" autofocus/>
@@ -16,9 +16,13 @@
         <br>
         <div id = "allQuestions">
             <div id="question-field">
-                <label>Question 1: </label>
+                <label>Question 1: Kuvan lisääminen kysymyksen perään seuraavassa muodossa: image:xxx.jpg</label>
                 <input class = "question" id = "q1" type = "text" autofocus/>
                 <br>
+                <form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
+                    <input type="file" name="myFile" />
+                    <input type="submit" value="Upload a file"/>
+                </form>
                 <br>
                 <label>Answer 1: </label>
                 <input id = "1a1" type = "text" autofocus/>
@@ -49,7 +53,7 @@
         <br>
         
         <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
-        
+
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/quizCreator.js"></script>
     </body>

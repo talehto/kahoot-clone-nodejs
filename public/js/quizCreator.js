@@ -44,7 +44,7 @@ function addQuestion(){
     var correctLabel = document.createElement('label');
     var correctField = document.createElement('input');
     
-    questionLabel.innerHTML = "Question " + String(questionNum) + ": ";
+    questionLabel.innerHTML = "Question " + String(questionNum) + ": Kuvan lisääminen kysymyksen perään seuraavassa muodossa: image:xxx.jpg";
     questionField.setAttribute('class', 'question');
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');

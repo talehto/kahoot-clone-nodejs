@@ -4,6 +4,10 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+//Added
+const bodyParser= require('body-parser')
+const multer = require('multer');
+
 //Import classes
 const {LiveGames} = require('./utils/liveGames');
 const {Players} = require('./utils/players');
@@ -20,7 +24,17 @@ var MongoClient = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var url = "mongodb://localhost:27017/";
 
-
+//Added
+app.use(bodyParser.urlencoded({extended: true}))
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+var upload = multer({ storage: storage })
 
 app.use(express.static(publicPath));
 
@@ -28,6 +42,17 @@ app.use(express.static(publicPath));
 server.listen(3000, () => {
     console.log("Server started on port 3000");
 });
+
+//Added
+app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
+  const file = req.file
+  if (!file) {
+    const error = new Error('Please upload a file')
+    error.httpStatusCode = 400
+    return next(error)
+  }
+   return res.status(200);
+})
 
 //When a connection to server is made from client
 io.on('connection', (socket) => {
@@ -106,6 +131,14 @@ io.on('connection', (socket) => {
                         correct: correctAnswer,
                         playersInGame: playerData.length
                     });
+                    for(var i = 0; i < Object.keys(players.players).length; i++){
+                        io.to(game.pin).emit('gameQuestionToPlayer', {q: question,
+                            a1: answer1,
+                            a2: answer2,
+                            a3: answer3,
+                            a4: answer4}
+                        );
+                    }
                     db.close();
                 });
             });
@@ -253,10 +286,7 @@ io.on('connection', (socket) => {
                     
                     db.close();
                 });
-            });
-            
-            
-            
+            });        
         }
     });
     
@@ -272,9 +302,7 @@ io.on('connection', (socket) => {
         var player = players.getPlayer(playerid);
         player.gameData.score += time;
     });
-    
-    
-    
+        
     socket.on('timeUp', function(){
         var game = games.getGame(socket.id);
         game.gameData.questionLive = false;
@@ -299,6 +327,11 @@ io.on('connection', (socket) => {
     });
     
     socket.on('nextQuestion', function(){
+        var question = '';
+        var answer1 = '';
+        var answer2 = '';
+        var answer3 = '';
+        var answer4 = '';
         var playerData = players.getPlayers(socket.id);
         //Reset players current answer to 0
         for(var i = 0; i < Object.keys(players.players).length; i++){
@@ -313,8 +346,6 @@ io.on('connection', (socket) => {
         game.gameData.question += 1;
         var gameid = game.gameData.gameid;
         
-        
-        
         MongoClient.connect(url, function(err, db){
                 if (err) throw err;
     
@@ -326,11 +357,11 @@ io.on('connection', (socket) => {
                     if(res[0].questions.length >= game.gameData.question){
                         var questionNum = game.gameData.question;
                         questionNum = questionNum - 1;
-                        var question = res[0].questions[questionNum].question;
-                        var answer1 = res[0].questions[questionNum].answers[0];
-                        var answer2 = res[0].questions[questionNum].answers[1];
-                        var answer3 = res[0].questions[questionNum].answers[2];
-                        var answer4 = res[0].questions[questionNum].answers[3];
+                        question = res[0].questions[questionNum].question;
+                        answer1 = res[0].questions[questionNum].answers[0];
+                        answer2 = res[0].questions[questionNum].answers[1];
+                        answer3 = res[0].questions[questionNum].answers[2];
+                        answer4 = res[0].questions[questionNum].answers[3];
                         var correctAnswer = res[0].questions[questionNum].correct;
 
                         socket.emit('gameQuestions', {
@@ -342,6 +373,14 @@ io.on('connection', (socket) => {
                             correct: correctAnswer,
                             playersInGame: playerData.length
                         });
+                        for(var i = 0; i < Object.keys(players.players).length; i++){
+                            io.to(game.pin).emit('gameQuestionToPlayer', {q: question,
+                                a1: answer1,
+                                a2: answer2,
+                                a3: answer3,
+                                a4: answer4}
+                            );
+                        }
                         db.close();
                     }else{
                         var playersInGame = players.getPlayers(game.hostId);
@@ -475,8 +514,7 @@ io.on('connection', (socket) => {
                 socket.emit('startGameFromCreator', num);
             });
             
-        });
-        
+        });        
         
     });
     
