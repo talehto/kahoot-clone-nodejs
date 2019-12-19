@@ -1,1 +1,5 @@
+# compiled output
+public/uploads
 
+# dependencies
+/node_modules
