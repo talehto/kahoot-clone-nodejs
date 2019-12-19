@@ -28,10 +28,10 @@ var url = "mongodb://localhost:27017/";
 app.use(bodyParser.urlencoded({extended: true}))
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads')
+    cb(null, 'public/uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, file.originalname);
   }
 })
 var upload = multer({ storage: storage })
@@ -44,14 +44,16 @@ server.listen(3000, () => {
 });
 
 //Added
-app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
-  const file = req.file
-  if (!file) {
-    const error = new Error('Please upload a file')
-    error.httpStatusCode = 400
-    return next(error)
-  }
-   return res.status(200);
+
+app.post('/uploadfile', upload.single('myFile'), (req, res) => {
+//app.post('/uploadfile', (req, res) => {
+    const file = req.file
+    if (!file) {
+        const error = new Error('Please upload a file')
+        error.httpStatusCode = 400
+        return res.send(error)
+    }
+    return res.send("ok");
 })
 
 //When a connection to server is made from client
