@@ -28,6 +28,10 @@ function addQuestion(){
     
     var questionLabel = document.createElement('label');
     var questionField = document.createElement('input');
+
+    var imageForm = document.createElement('form');
+    var fileField = document.createElement('input');
+    var submitFileField = document.createElement('input');    
     
     var answer1Label = document.createElement('label');
     var answer1Field = document.createElement('input');
@@ -49,6 +53,18 @@ function addQuestion(){
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');
     
+    imageForm.setAttribute('id','uploadForm');
+    imageForm.setAttribute('action','/uploadfile');
+    imageForm.setAttribute('enctype','multipart/form-data');
+    imageForm.setAttribute('method','POST');
+
+    fileField.setAttribute('type','file');
+    fileField.setAttribute('name','myFile');
+
+    submitFileField.setAttribute('type','submit');
+    submitFileField.setAttribute('value','Upload a file');
+    submitFileField.setAttribute('name','submit');
+
     answer1Label.innerHTML = "Answer 1: ";
     answer2Label.innerHTML = " Answer 2: ";
     answer3Label.innerHTML = "Answer 3: ";
@@ -70,6 +86,11 @@ function addQuestion(){
     
     newQuestionDiv.appendChild(questionLabel);
     newQuestionDiv.appendChild(questionField);
+
+    newQuestionDiv.appendChild(imageForm);
+    newQuestionDiv.appendChild(fileField);
+    newQuestionDiv.appendChild(submitFileField);
+    
     newQuestionDiv.appendChild(document.createElement('br'));
     newQuestionDiv.appendChild(document.createElement('br'));
     newQuestionDiv.appendChild(answer1Label);

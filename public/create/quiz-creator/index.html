@@ -19,9 +19,9 @@
                 <label>Question 1: Kuvan lisääminen kysymyksen perään seuraavassa muodossa: image:xxx.jpg</label>
                 <input class = "question" id = "q1" type = "text" autofocus/>
                 <br>
-                <form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
+                <form id="uploadForm" action="/uploadfile" enctype="multipart/form-data" method="POST"> 
                     <input type="file" name="myFile" />
-                    <input type="submit" value="Upload a file"/>
+                    <input type="submit" value="Upload a file" name="submit"/>
                 </form>
                 <br>
                 <label>Answer 1: </label>
@@ -55,6 +55,24 @@
         <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
 
         <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/jquery.form.js"></script>
         <script src = "../../js/quizCreator.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#uploadForm').submit(function() {
+                    console.log("Uploading a file...")
+                    $(this).ajaxSubmit({
+                        error: function(xhr) {
+                            status('Error: ' + xhr.status);
+                        },
+                        success: function(response) {
+                            console.log(response)
+                        }
+                    });
+                return false;
+                });    
+            });
+        </script>
     </body>
 </html>

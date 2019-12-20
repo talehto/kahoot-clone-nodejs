@@ -51,9 +51,9 @@ app.post('/uploadfile', upload.single('myFile'), (req, res) => {
     if (!file) {
         const error = new Error('Please upload a file')
         error.httpStatusCode = 400
-        return res.send(error)
+        return res.end(error)
     }
-    return res.send("ok");
+    return res.end("ok");
 })
 
 //When a connection to server is made from client
