@@ -1,6 +1,27 @@
 var socket = io();
 var questionNum = 1; //Starts at two because question 1 is already present
 
+function uploadFileButtonPressed(num){
+    console.log('Executing uploadFileButtonPressed...' + num);
+    console.log(typeof num);
+    var domId = "#uploadForm"+ String(num)
+    console.log('domId: ' + domId);
+    console.log(typeof domId);
+    $(domId).submit(function(event) {
+        console.log("Uploading a file...")
+        event.preventDefault();
+        $(this).ajaxSubmit({
+            error: function(xhr) {
+                status('Error: ' + xhr.status);
+            },
+            success: function(response) {
+                console.log(response)
+            }
+        });
+        return false;
+    });
+}
+
 function updateDatabase(){
     var questions = [];
     var name = document.getElementById('name').value;
@@ -31,7 +52,7 @@ function addQuestion(){
 
     var imageForm = document.createElement('form');
     var fileField = document.createElement('input');
-    var submitFileField = document.createElement('input');    
+    var uploadFileButton = document.createElement('button');    
     
     var answer1Label = document.createElement('label');
     var answer1Field = document.createElement('input');
@@ -53,7 +74,7 @@ function addQuestion(){
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');
     
-    imageForm.setAttribute('id','uploadForm');
+    imageForm.setAttribute('id','uploadForm' + String(questionNum));
     imageForm.setAttribute('action','/uploadfile');
     imageForm.setAttribute('enctype','multipart/form-data');
     imageForm.setAttribute('method','POST');
@@ -61,9 +82,8 @@ function addQuestion(){
     fileField.setAttribute('type','file');
     fileField.setAttribute('name','myFile');
 
-    submitFileField.setAttribute('type','submit');
-    submitFileField.setAttribute('value','Upload a file');
-    submitFileField.setAttribute('name','submit');
+    uploadFileButton.setAttribute('onclick','uploadFileButtonPressed(' + String(questionNum) + ')');
+    uploadFileButton.innerHTML = "Upload a file"
 
     answer1Label.innerHTML = "Answer 1: ";
     answer2Label.innerHTML = " Answer 2: ";
@@ -88,8 +108,8 @@ function addQuestion(){
     newQuestionDiv.appendChild(questionField);
 
     newQuestionDiv.appendChild(imageForm);
-    newQuestionDiv.appendChild(fileField);
-    newQuestionDiv.appendChild(submitFileField);
+    imageForm.appendChild(fileField);
+    imageForm.appendChild(uploadFileButton);
     
     newQuestionDiv.appendChild(document.createElement('br'));
     newQuestionDiv.appendChild(document.createElement('br'));
