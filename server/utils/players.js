@@ -21,6 +21,9 @@ class Players {
     getPlayers(hostId){
         return this.players.filter((player) => player.hostId === hostId);
     }
+    sortPlayersByScore(){
+        this.players.sort((a, b) => {return a.gameData.score < b.gameData.score} );
+    }
 }
 
 module.exports = {Players};

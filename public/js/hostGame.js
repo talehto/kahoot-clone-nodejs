@@ -120,7 +120,6 @@ socket.on('questionOver', function(playerData, correct){
     
     document.getElementById('nextQButton').style.display = "block";
 
-    playerData.sort((a, b) => (a.gameData.score > b.gameData.score) ? 1 : -1)
     console.log("playerData.name: " + playerData[0].name);
     $("#top10list").empty();
 

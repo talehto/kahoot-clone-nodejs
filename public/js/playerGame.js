@@ -78,11 +78,13 @@ socket.on('questionOver', function(data){
     document.getElementById('answer2').style.visibility = "hidden";
     document.getElementById('answer3').style.visibility = "hidden";
     document.getElementById('answer4').style.visibility = "hidden";
+
     socket.emit('getScore');
 });
 
 socket.on('newScore', function(data){
-    document.getElementById('scoreText').innerHTML = "Score: " + data;
+    //document.getElementById('scoreText').innerHTML = "Score: " + data;
+    document.getElementById('scoreText').innerHTML = "Score: " + data.score + "Position: " + data.currentPosition + ", players: " + data.numberOfPlayers;
 });
 
 socket.on('nextQuestionPlayer', function(){

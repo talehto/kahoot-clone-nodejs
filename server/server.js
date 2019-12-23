@@ -278,6 +278,7 @@ io.on('connection', (socket) => {
                     //Checks if all players answered
                     if(game.gameData.playersAnswered == playerNum.length){
                         game.gameData.questionLive = false; //Question has been ended bc players all answered under time
+                        players.sortPlayersByScore();
                         var playerData = players.getPlayers(game.hostId);
                         io.to(game.pin).emit('questionOver', playerData, correctAnswer);//Tell everyone that question is over
                     }else{
@@ -296,7 +297,16 @@ io.on('connection', (socket) => {
     
     socket.on('getScore', function(){
         var player = players.getPlayer(socket.id);
-        socket.emit('newScore', player.gameData.score); 
+        var hostId = player.hostId;
+        var playerData = players.getPlayers(hostId);
+
+        for(var i = 0; i < playerData.length; i++) {
+            if(playerData[i].playerId === player.playerId)
+                break;
+        }
+
+        socket.emit('newScore', {score: player.gameData.score, currentPosition: i + 1, numberOfPlayers: playerData.length} ); 
+        
     });
     
     socket.on('time', function(data){
