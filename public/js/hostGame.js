@@ -20,7 +20,8 @@ socket.on('noGameFound', function(){
 socket.on('gameQuestions', function(data){
     console.log("data.q1: " + data.q1)
     document.getElementById('showTop10Button').style.display = "none";
-    document.getElementById('top10listCollapseCard').className = "collapse";
+    document.getElementById('top10listCollapseCard').className = "collapse bg-light text-dark col-12";
+    
     var questionStr = data.q1
     if(data.q1.includes('image:')){
         console.log("here we go")
@@ -172,7 +173,7 @@ function updateTimer(){
 socket.on('GameOver', function(data){
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('showTop10Button').style.display = "none";
-    document.getElementById('top10listCollapseCard').className = "collapse";
+    document.getElementById('top10listCollapseCard').className = "collapse bg-light text-dark col-12";
     document.getElementById('square1').style.display = "none";
     document.getElementById('square2').style.display = "none";
     document.getElementById('square3').style.display = "none";
