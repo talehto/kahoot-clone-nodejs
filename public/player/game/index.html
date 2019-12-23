@@ -11,37 +11,39 @@
         <title>Game | KahootClone</title>
     </head>
     <body>
-        <div id = "stats">
-            <div id = "nameText" class="alert alert-primary" role="alert">
-                Name:
+        <div class="container">
+            
+            <div class="row m-3">
+                <div class="card bg-light text-dark col-12">
+                    <div class="card-body">
+                        <div id = "nameText" class="alert alert-warning" role="alert">Name:</div>
+                        <div id = "scoreText" class="alert alert-warning" role="alert">Score:</div>
+                        <div id = "rankingText" class="alert alert-warning" role="alert">Ranking:</div>
+                    </div>
+                </div>
             </div>
-            <div id = "scoreText" class="alert alert-primary" role="alert">
-                Score:
+
+            
+            <div class="row m-3">
+                <div class="card bg-light text-dark col-12">
+                    <div class="card-body">
+                        <div id = "message" class="alert alert-light invisible" role="alert"></div>
+                        <div id = "question" class="alert alert-primary" role="alert"></div>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(1)" id = "answer1"></button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(2)" id = "answer2"></button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(3)" id = "answer3"></button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(4)" id = "answer4"></button>
+                    </div>
+                </div>
             </div>
-            <!--h4 id = "nameText">Name: </h4>
-            <h4 id = "scoreText">Score: </h4>
-            <h4 id = "rankText"></h4-->
+            
+            <script src="../../js/bootstrap/jquery-3.4.1.min.js"></script>
+            <script src="../../js/bootstrap/popper.min.js"></script>
+            <script src="../../js/bootstrap/bootstrap.min.js"></script>
+            <script src = "../../socket.io/socket.io.js"></script>
+            <script src = "../../js/libs/jqueryLibrary.js"></script>
+            <script src = "../../js/libs/deparam.js"></script>
+            <script src = "../../js/playerGame.js"></script>
         </div>
-
-        <div id = "message" class="alert alert-light" role="alert">
-        </div>
-
-        <div id = "question" class="alert alert-light" role="alert">
-        </div>
-
-        <div class="bd-example">
-            <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(1)" id = "answer1"></button>
-            <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(2)" id = "answer2"></button>
-            <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(3)" id = "answer3"></button>
-            <button type="button" class="btn btn-primary btn-lg btn-block" onclick = "answerSubmitted(4)" id = "answer4"></button>
-        </div>
-        
-        <script src="../../js/bootstrap/jquery-3.4.1.min.js"></script>
-        <script src="../../js/bootstrap/popper.min.js"></script>
-        <script src="../../js/bootstrap/bootstrap.min.js"></script>
-        <script src = "../../socket.io/socket.io.js"></script>
-        <script src = "../../js/libs/jqueryLibrary.js"></script>
-        <script src = "../../js/libs/deparam.js"></script>
-        <script src = "../../js/playerGame.js"></script>
     </body>
 </html>

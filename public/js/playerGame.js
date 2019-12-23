@@ -34,6 +34,7 @@ function answerSubmitted(num){
         document.getElementById('answer2').style.visibility = "hidden";
         document.getElementById('answer3').style.visibility = "hidden";
         document.getElementById('answer4').style.visibility = "hidden";
+        document.getElementById('message').className = "alert alert-light";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Answer Submitted! Waiting on other players...";
         
@@ -66,10 +67,12 @@ socket.on('gameQuestionToPlayer', function(data){
 socket.on('questionOver', function(data){
     if(correct == true){
         document.body.style.backgroundColor = "#4CAF50";
+        document.getElementById('message').className = "alert alert-success";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Correct!";
     }else{
         document.body.style.backgroundColor = "#f94a1e";
+        document.getElementById('message').className = "alert-danger";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Incorrect!";
     }
@@ -83,8 +86,8 @@ socket.on('questionOver', function(data){
 });
 
 socket.on('newScore', function(data){
-    //document.getElementById('scoreText').innerHTML = "Score: " + data;
-    document.getElementById('scoreText').innerHTML = "Score: " + data.score + "Position: " + data.currentPosition + ", players: " + data.numberOfPlayers;
+    document.getElementById('scoreText').innerHTML = "Pisteet: " + data.score;
+    document.getElementById('rankingText').innerHTML = "Sijoitus: " + data.currentPosition + " / " + data.numberOfPlayers;
 });
 
 socket.on('nextQuestionPlayer', function(){
@@ -121,6 +124,7 @@ socket.on('GameOver', function(){
     document.getElementById('answer2').style.visibility = "hidden";
     document.getElementById('answer3').style.visibility = "hidden";
     document.getElementById('answer4').style.visibility = "hidden";
+    document.getElementById('message').className = "alert alert-light";
     document.getElementById('message').style.display = "block";
     document.getElementById('message').innerHTML = "GAME OVER";
 });
