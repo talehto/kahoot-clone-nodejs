@@ -131,7 +131,9 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
-                        playersInGame: playerData.length
+                        playersInGame: playerData.length,
+                        questionNum: 1,
+                        numberOfQuestions: res[0].questions.length
                     });
                     for(var i = 0; i < Object.keys(players.players).length; i++){
                         io.to(game.pin).emit('gameQuestionToPlayer', {q: question,
@@ -373,7 +375,9 @@ io.on('connection', (socket) => {
                             a3: answer3,
                             a4: answer4,
                             correct: correctAnswer,
-                            playersInGame: playerData.length
+                            playersInGame: playerData.length,
+                            questionNum: questionNum + 1,
+                            numberOfQuestions: res[0].questions.length 
                         });
                         for(var i = 0; i < Object.keys(players.players).length; i++){
                             io.to(game.pin).emit('gameQuestionToPlayer', {q: question,

@@ -21,7 +21,8 @@ socket.on('gameQuestions', function(data){
     console.log("data.q1: " + data.q1)
     document.getElementById('showTop10Button').style.display = "none";
     document.getElementById('top10listCollapseCard').className = "collapse bg-light text-dark col-12";
-    
+    document.getElementById('questionNum').innerHTML = "Kysymys " + String(data.questionNum) + " / " + String(data.numberOfQuestions);
+
     var questionStr = data.q1
     if(data.q1.includes('image:')){
         console.log("here we go")
