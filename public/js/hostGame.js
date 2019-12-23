@@ -19,6 +19,8 @@ socket.on('noGameFound', function(){
 
 socket.on('gameQuestions', function(data){
     console.log("data.q1: " + data.q1)
+    document.getElementById('showTop10Button').style.display = "none";
+    document.getElementById('top10listCollapseCard').className = "collapse";
     var questionStr = data.q1
     if(data.q1.includes('image:')){
         console.log("here we go")
@@ -115,7 +117,23 @@ socket.on('questionOver', function(playerData, correct){
     document.getElementById('square4').style.height = answer4 + "px";
     
     document.getElementById('nextQButton').style.display = "block";
-    
+
+    playerData.sort((a, b) => (a.gameData.score > b.gameData.score) ? 1 : -1)
+    console.log("playerData.name: " + playerData[0].name);
+    $("#top10list").empty();
+
+    var top10List  = document.getElementById("top10list");
+
+    for(var i = 0; i < 10; i++){
+        if(i === playerData.length){
+            break;
+        }
+        var newItem = document.createElement("li");
+        newItem.setAttribute('class', 'list-group-item');
+        newItem.innerHTML = "" + String(i + 1) + ". " + playerData[i].name;
+        top10List.appendChild(newItem);
+    }
+    document.getElementById('showTop10Button').style.display = "block";
 });
 
 function nextQuestion(){
@@ -124,6 +142,7 @@ function nextQuestion(){
         imgElem.remove()
     }
     document.getElementById('nextQButton').style.display = "none";
+    document.getElementById('showTop10Button').style.display = "none";
     document.getElementById('square1').style.display = "none";
     document.getElementById('square2').style.display = "none";
     document.getElementById('square3').style.display = "none";
@@ -152,6 +171,8 @@ function updateTimer(){
 }
 socket.on('GameOver', function(data){
     document.getElementById('nextQButton').style.display = "none";
+    document.getElementById('showTop10Button').style.display = "none";
+    document.getElementById('top10listCollapseCard').className = "collapse";
     document.getElementById('square1').style.display = "none";
     document.getElementById('square2').style.display = "none";
     document.getElementById('square3').style.display = "none";
@@ -164,9 +185,7 @@ socket.on('GameOver', function(data){
     document.getElementById('timerText').innerHTML = "";
     document.getElementById('question').innerHTML = "GAME OVER";
     document.getElementById('playersAnswered').innerHTML = "";
-    
-    
-    
+        
     document.getElementById('winner1').style.display = "block";
     document.getElementById('winner2').style.display = "block";
     document.getElementById('winner3').style.display = "block";
@@ -189,23 +208,5 @@ socket.on('getTime', function(player){
         time: time
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
