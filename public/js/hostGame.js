@@ -187,6 +187,7 @@ socket.on('GameOver', function(data){
     document.getElementById('timerText').innerHTML = "";
     document.getElementById('question').innerHTML = "GAME OVER";
     document.getElementById('playersAnswered').innerHTML = "";
+    document.getElementById('questionTitle').innerHTML = "";
         
     document.getElementById('winner1').style.display = "block";
     document.getElementById('winner2').style.display = "block";
