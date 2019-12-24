@@ -11,11 +11,12 @@ socket.on('connect', function() {
     //Tell server that it is host connection from game view
     socket.emit('player-join-game', params);
     
-    document.getElementById('question').style.visibility = "visible";
-    document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    document.getElementById('gameStatsCard').style.display = "none";
+    document.getElementById('question').style.display = "block";
+    document.getElementById('answer1').style.display = "block";
+    document.getElementById('answer2').style.display = "block";
+    document.getElementById('answer3').style.display = "block";
+    document.getElementById('answer4').style.display = "block";
 });
 
 socket.on('noGameFound', function(){
@@ -29,11 +30,12 @@ function answerSubmitted(num){
         socket.emit('playerAnswer', num);//Sends player answer to server
         
         //Hiding buttons from user
-        document.getElementById('question').style.visibility = "hidden";
-        document.getElementById('answer1').style.visibility = "hidden";
-        document.getElementById('answer2').style.visibility = "hidden";
-        document.getElementById('answer3').style.visibility = "hidden";
-        document.getElementById('answer4').style.visibility = "hidden";
+        document.getElementById('gameStatsCard').style.display = "block";
+        document.getElementById('question').style.display = "none";
+        document.getElementById('answer1').style.display = "none";
+        document.getElementById('answer2').style.display = "none";
+        document.getElementById('answer3').style.display = "none";
+        document.getElementById('answer4').style.display = "none";
         document.getElementById('message').className = "alert alert-light";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Answer Submitted! Waiting on other players...";
@@ -57,6 +59,7 @@ socket.on('gameQuestionToPlayer', function(data){
         questionStr = data.q.substr(0,n); 
     }
 
+    document.getElementById('gameStatsCard').style.display = "none";
     document.getElementById('question').innerHTML = questionStr;
     document.getElementById('answer1').innerHTML = data.a1;
     document.getElementById('answer2').innerHTML = data.a2;
@@ -76,11 +79,12 @@ socket.on('questionOver', function(data){
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Incorrect!";
     }
-    document.getElementById('question').style.visibility = "hidden";
-    document.getElementById('answer1').style.visibility = "hidden";
-    document.getElementById('answer2').style.visibility = "hidden";
-    document.getElementById('answer3').style.visibility = "hidden";
-    document.getElementById('answer4').style.visibility = "hidden";
+    document.getElementById('gameStatsCard').style.display = "block";
+    document.getElementById('question').style.display = "none";
+    document.getElementById('answer1').style.display = "none";
+    document.getElementById('answer2').style.display = "none";
+    document.getElementById('answer3').style.display = "none";
+    document.getElementById('answer4').style.display = "none";
 
     socket.emit('getScore');
 });
@@ -94,11 +98,12 @@ socket.on('nextQuestionPlayer', function(){
     correct = false;
     playerAnswered = false;
 
-    document.getElementById('question').style.visibility = "visible";
-    document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    document.getElementById('gameStatsCard').style.display = "none";
+    document.getElementById('question').style.display = "block";
+    document.getElementById('answer1').style.display = "block";
+    document.getElementById('answer2').style.display = "block";
+    document.getElementById('answer3').style.display = "block";
+    document.getElementById('answer4').style.display = "block";
     document.getElementById('message').style.display = "none";
     document.body.style.backgroundColor = "white";
     
@@ -119,11 +124,12 @@ socket.on('playerGameData', function(data){
 
 socket.on('GameOver', function(){
     document.body.style.backgroundColor = "#FFFFFF";
-    document.getElementById('question').style.visibility = "hidden";
-    document.getElementById('answer1').style.visibility = "hidden";
-    document.getElementById('answer2').style.visibility = "hidden";
-    document.getElementById('answer3').style.visibility = "hidden";
-    document.getElementById('answer4').style.visibility = "hidden";
+    document.getElementById('gameStatsCard').style.display = "block";
+    document.getElementById('question').style.display = "none";
+    document.getElementById('answer1').style.display = "none";
+    document.getElementById('answer2').style.display = "none";
+    document.getElementById('answer3').style.display = "none";
+    document.getElementById('answer4').style.display = "none";
     document.getElementById('message').className = "alert alert-light";
     document.getElementById('message').style.display = "block";
     document.getElementById('message').innerHTML = "GAME OVER";
