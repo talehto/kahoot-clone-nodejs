@@ -400,7 +400,7 @@ io.on('connection', (socket) => {
                         db.close();
                     }else{
                         var playersInGame = players.getPlayers(game.hostId);
-                        var first = {name: "", score: 0};
+                        /*var first = {name: "", score: 0};
                         var second = {name: "", score: 0};
                         var third = {name: "", score: 0};
                         var fourth = {name: "", score: 0};
@@ -467,14 +467,10 @@ io.on('connection', (socket) => {
                                     fifth.score = playersInGame[i].gameData.score;
                                 }
                             }
-                        }
+                        }*/
                         
                         io.to(game.pin).emit('GameOver', {
-                            num1: first.name,
-                            num2: second.name,
-                            num3: third.name,
-                            num4: fourth.name,
-                            num5: fifth.name
+                            players: playersInGame
                         });
                     }
                 });

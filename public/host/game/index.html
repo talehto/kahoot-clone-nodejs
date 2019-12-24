@@ -11,7 +11,7 @@
         <div class="container">
 
             <div class="row m-3">
-                <div class="card bg-light text-dark col-12">
+                <div id = "questionStatsCard" class="card bg-light text-dark col-12">
                     <div class="card-body">
                         <h5 class="card-title">Vastaukset</h5>
                         <h4 id = "questionNum">Kysymys 1 / x</h4>
@@ -49,7 +49,8 @@
 
             <div class="row m-3">
                 <div class="collapse bg-light text-dark col-12" id="top10listCollapseCard">
-                    <div class="card card-body">
+                    <div class="card card-body" id = "top10ListCard">
+                        <h2 id = "top10PlayersTitle">10 parasta pelaajaa</h2>
                         <ul class="list-group" id="top10list">
                         </ul>
                     </div>
@@ -60,12 +61,12 @@
                 <button onclick = "nextQuestion()" id = "nextQButton" type="button" class="btn btn-primary">Next Question</button>
             </div>
             
-            <h2 id = "winnerTitle">Top 5 Players</h4>
+            <!--h2 id = "winnerTitle">Top 5 Players</h4>
             <h3 id = "winner1">1.</h3>
             <h3 id = "winner2">2.</h3>
             <h3 id = "winner3">3.</h3>
             <h3 id = "winner4">4.</h3>
-            <h3 id = "winner5">5.</h3>
+            <h3 id = "winner5">5.</h3-->
             
             <script src="../../js/bootstrap/jquery-3.4.1.min.js"></script>
             <script src="../../js/bootstrap/popper.min.js"></script>

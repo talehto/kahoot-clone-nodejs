@@ -174,6 +174,9 @@ socket.on('GameOver', function(data){
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('showTop10Button').style.display = "none";
     document.getElementById('top10listCollapseCard').className = "collapse bg-light text-dark col-12";
+    
+    document.getElementById('questionStatsCard').style.display = "none";
+
     document.getElementById('square1').style.display = "none";
     document.getElementById('square2').style.display = "none";
     document.getElementById('square3').style.display = "none";
@@ -187,19 +190,31 @@ socket.on('GameOver', function(data){
     document.getElementById('question').innerHTML = "GAME OVER";
     document.getElementById('playersAnswered').innerHTML = "";
     document.getElementById('questionTitle').innerHTML = "";
-        
-    document.getElementById('winner1').style.display = "block";
-    document.getElementById('winner2').style.display = "block";
-    document.getElementById('winner3').style.display = "block";
-    document.getElementById('winner4').style.display = "block";
-    document.getElementById('winner5').style.display = "block";
-    document.getElementById('winnerTitle').style.display = "block";
-    
-    document.getElementById('winner1').innerHTML = "1. " + data.num1;
+            
+
+    $("#top10list").empty();
+    var top10List  = document.getElementById("top10list");
+    //var top10ListCard  = document.getElementById("top10ListCard");
+    //var top10Header = document.createElement("h2");
+    //top10Header.innerHTML = "10 parasta pelaajaa";
+    //top10ListCard.appendChild(top10Header);
+
+    for(var i = 0; i < 10; i++){
+        if(i === data.players.length){
+            break;
+        }
+        var newItem = document.createElement("li");
+        newItem.setAttribute('class', 'list-group-item');
+        newItem.innerHTML = "" + String(i + 1) + ". " + data.players[i].name;
+        top10List.appendChild(newItem);
+    }
+    document.getElementById('top10listCollapseCard').className = "collapse show bg-light text-dark col-12";
+
+    /*document.getElementById('winner1').innerHTML = "1. " + data.num1;
     document.getElementById('winner2').innerHTML = "2. " + data.num2;
     document.getElementById('winner3').innerHTML = "3. " + data.num3;
     document.getElementById('winner4').innerHTML = "4. " + data.num4; 
-    document.getElementById('winner5').innerHTML = "5. " + data.num5;
+    document.getElementById('winner5').innerHTML = "5. " + data.num5;*/
 });
 
 
