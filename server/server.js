@@ -29,13 +29,14 @@ var mongoDbUrl = process.env.MONGODB_URI || "mongodb://localhost:27017/";
 app.use(bodyParser.urlencoded({extended: true}))
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads')
+    cb(null, 'public')
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 })
 var upload = multer({ storage: storage })
+//var upload = multer();
 
 app.use(express.static(publicPath));
 app.set('port', (process.env.PORT || 3000) );

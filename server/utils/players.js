@@ -22,7 +22,7 @@ class Players {
         return this.players.filter((player) => player.hostId === hostId);
     }
     sortPlayersByScore(){
-        this.players.sort((a, b) => {return a.gameData.score < b.gameData.score} );
+        this.players.sort((a, b) => (a.gameData.score < b.gameData.score) ? 1 : -1 );
     }
 }
 
