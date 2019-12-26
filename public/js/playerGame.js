@@ -8,15 +8,16 @@ var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 socket.on('connect', function() {
     console.log("connect to the game")
-    //Tell server that it is host connection from game view
-    socket.emit('player-join-game', params);
     
     document.getElementById('gameStatsCard').style.display = "none";
-    document.getElementById('question').style.display = "none";
-    document.getElementById('answer1').style.display = "none";
-    document.getElementById('answer2').style.display = "none";
-    document.getElementById('answer3').style.display = "none";
-    document.getElementById('answer4').style.display = "none";
+    document.getElementById('question').style.display = "block";
+    document.getElementById('answer1').style.display = "block";
+    document.getElementById('answer2').style.display = "block";
+    document.getElementById('answer3').style.display = "block";
+    document.getElementById('answer4').style.display = "block";
+
+    //Tell server that it is host connection from game view
+    socket.emit('player-join-game', params);
 });
 
 socket.on('noGameFound', function(){
@@ -59,12 +60,6 @@ socket.on('gameQuestionToPlayer', function(data){
     document.getElementById('answer2').innerHTML = data.a2;
     document.getElementById('answer3').innerHTML = data.a3;
     document.getElementById('answer4').innerHTML = data.a4;
-
-    document.getElementById('question').style.display = "block";
-    document.getElementById('answer1').style.display = "block";
-    document.getElementById('answer2').style.display = "block";
-    document.getElementById('answer3').style.display = "block";
-    document.getElementById('answer4').style.display = "block";
 });
 
 socket.on('questionOver', function(data){

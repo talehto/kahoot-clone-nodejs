@@ -36,7 +36,6 @@ var storage = multer.diskStorage({
   }
 })
 var upload = multer({ storage: storage })
-//var upload = multer();
 
 app.use(express.static(publicPath));
 app.set('port', (process.env.PORT || 3000) );
@@ -230,8 +229,7 @@ io.on('connection', (socket) => {
                     db.close();
                 });
             });
-            
-            
+
             io.to(game.pin).emit('gameStartedPlayer');
             game.gameData.questionLive = true;
         }else{
