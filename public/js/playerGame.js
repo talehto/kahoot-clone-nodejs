@@ -53,14 +53,14 @@ socket.on('answerResult', function(data){
 socket.on('gameQuestionToPlayer', function(data){
     console.log("gameQuestionToPlayer called")
 
-    var questionStr = data.q
+    /*var questionStr = data.q
     if(data.q.includes('image:')){
         var n = data.q.indexOf("image:");
         questionStr = data.q.substr(0,n); 
-    }
+    }*/
 
     document.getElementById('gameStatsCard').style.display = "none";
-    document.getElementById('question').innerHTML = questionStr;
+    document.getElementById('question').innerHTML = data.q;
     document.getElementById('answer1').innerHTML = data.a1;
     document.getElementById('answer2').innerHTML = data.a2;
     document.getElementById('answer3').innerHTML = data.a3;

@@ -7,6 +7,7 @@ const socketIO = require('socket.io');
 //Added
 const bodyParser= require('body-parser')
 const multer = require('multer');
+fs = require('fs-extra')
 
 //Import classes
 const {LiveGames} = require('./utils/liveGames');
@@ -46,7 +47,6 @@ server.listen(3000, () => {
 //Added
 
 app.post('/uploadfile', upload.single('myFile'), (req, res) => {
-//app.post('/uploadfile', (req, res) => {
     const file = req.file
     if (!file) {
         const error = new Error('Please upload a file')
@@ -54,6 +54,81 @@ app.post('/uploadfile', upload.single('myFile'), (req, res) => {
         return res.end(error)
     }
     return res.end("ok");
+})
+
+app.post('/uploadimage', upload.single('myImage'), (req, res, next) => {
+    console.log("req.file.originalname: " + req.file.originalname)
+
+    var img = fs.readFileSync(req.file.path);
+    var encode_image = img.toString('base64');
+
+    var finalImg = {
+        name: req.file.originalname,
+        contentType: req.file.mimetype,
+        image:  new Buffer(encode_image, 'base64')
+   };
+    
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("kahootDB");
+        dbo.collection('kahootGamesImages').insertOne(finalImg, (err, result) => {
+            console.log(result)
+
+            if (err) {
+                console.log("err: " + err);
+                const error = new Error('Please upload a file')
+                error.httpStatusCode = 400
+                return next(error);
+            }
+        
+            console.log('saved to database')
+            db.close();
+            return res.end("ok");
+        });
+    });
+    
+})
+
+app.get('/photobyname/:name', (req, res, next) => {
+var filename = req.params.name;
+
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("kahootDB");
+        dbo.collection('kahootGamesImages').findOne({'name': filename }, (err, result) => {
+            console.log("err: " + err);
+            console.log("result: " + result);
+            if (!result) {
+                const error = new Error('file is not found')
+                error.httpStatusCode = 400
+                //return res.end(error)
+                return next(error);
+            }else{
+                res.contentType('image/jpeg');
+                res.send(result.image.buffer);
+            }
+            db.close();
+        }); 
+    });
+})
+
+app.get('/removephotobyname/:name', (req, res, next) => {
+var filename = req.params.name;
+
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("kahootDB");
+        dbo.collection('kahootGamesImages').remove({'name': filename }, (err, result) => {
+            if (err) {
+                const error = new Error('Please upload a file')
+                error.httpStatusCode = 400
+                return next(error);
+            }
+            console.log("image " + req.params.name + " removed from the database")
+            db.close();
+            return res.end("ok");
+        }); 
+    });
 })
 
 //When a connection to server is made from client
@@ -123,6 +198,7 @@ io.on('connection', (socket) => {
                     var answer3 = res[0].questions[0].answers[2];
                     var answer4 = res[0].questions[0].answers[3];
                     var correctAnswer = res[0].questions[0].correct;
+                    var imageName = res[0].questions[0].image;
                     
                     socket.emit('gameQuestions', {
                         q1: question,
@@ -131,6 +207,7 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        image: imageName,
                         playersInGame: playerData.length,
                         questionNum: 1,
                         numberOfQuestions: res[0].questions.length
@@ -377,6 +454,7 @@ io.on('connection', (socket) => {
                         answer3 = res[0].questions[questionNum].answers[2];
                         answer4 = res[0].questions[questionNum].answers[3];
                         var correctAnswer = res[0].questions[questionNum].correct;
+                        var imageName = res[0].questions[questionNum].image;
 
                         socket.emit('gameQuestions', {
                             q1: question,
@@ -385,6 +463,7 @@ io.on('connection', (socket) => {
                             a3: answer3,
                             a4: answer4,
                             correct: correctAnswer,
+                            image: imageName,
                             playersInGame: playerData.length,
                             questionNum: questionNum + 1,
                             numberOfQuestions: res[0].questions.length 
@@ -400,75 +479,6 @@ io.on('connection', (socket) => {
                         db.close();
                     }else{
                         var playersInGame = players.getPlayers(game.hostId);
-                        /*var first = {name: "", score: 0};
-                        var second = {name: "", score: 0};
-                        var third = {name: "", score: 0};
-                        var fourth = {name: "", score: 0};
-                        var fifth = {name: "", score: 0};
-                        
-                        for(var i = 0; i < playersInGame.length; i++){
-                            console.log(playersInGame[i].gameData.score);
-                            if(playersInGame[i].gameData.score > fifth.score){
-                                if(playersInGame[i].gameData.score > fourth.score){
-                                    if(playersInGame[i].gameData.score > third.score){
-                                        if(playersInGame[i].gameData.score > second.score){
-                                            if(playersInGame[i].gameData.score > first.score){
-                                                //First Place
-                                                fifth.name = fourth.name;
-                                                fifth.score = fourth.score;
-                                                
-                                                fourth.name = third.name;
-                                                fourth.score = third.score;
-                                                
-                                                third.name = second.name;
-                                                third.score = second.score;
-                                                
-                                                second.name = first.name;
-                                                second.score = first.score;
-                                                
-                                                first.name = playersInGame[i].name;
-                                                first.score = playersInGame[i].gameData.score;
-                                            }else{
-                                                //Second Place
-                                                fifth.name = fourth.name;
-                                                fifth.score = fourth.score;
-                                                
-                                                fourth.name = third.name;
-                                                fourth.score = third.score;
-                                                
-                                                third.name = second.name;
-                                                third.score = second.score;
-                                                
-                                                second.name = playersInGame[i].name;
-                                                second.score = playersInGame[i].gameData.score;
-                                            }
-                                        }else{
-                                            //Third Place
-                                            fifth.name = fourth.name;
-                                            fifth.score = fourth.score;
-                                                
-                                            fourth.name = third.name;
-                                            fourth.score = third.score;
-                                            
-                                            third.name = playersInGame[i].name;
-                                            third.score = playersInGame[i].gameData.score;
-                                        }
-                                    }else{
-                                        //Fourth Place
-                                        fifth.name = fourth.name;
-                                        fifth.score = fourth.score;
-                                        
-                                        fourth.name = playersInGame[i].name;
-                                        fourth.score = playersInGame[i].gameData.score;
-                                    }
-                                }else{
-                                    //Fifth Place
-                                    fifth.name = playersInGame[i].name;
-                                    fifth.score = playersInGame[i].gameData.score;
-                                }
-                            }
-                        }*/
-                        
                         io.to(game.pin).emit('GameOver', {
                             players: playersInGame
                         });

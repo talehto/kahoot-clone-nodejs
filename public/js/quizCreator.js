@@ -2,6 +2,7 @@ var socket = io();
 var questionNum = 1; //Starts at two because question 1 is already present
 
 function uploadFileButtonPressed(num){
+    //console.log("File name: " + document.getElementById('inputFileId1').files[0].name );
     console.log('Executing uploadFileButtonPressed...' + num);
     console.log(typeof num);
     var domId = "#uploadForm"+ String(num)
@@ -33,7 +34,11 @@ function updateDatabase(){
         var answer4 = document.getElementById(i + 'a4').value;
         var correct = document.getElementById('correct' + i).value;
         var answers = [answer1, answer2, answer3, answer4];
-        questions.push({"question": question, "answers": answers, "correct": correct})
+        var image = "";
+        if (0 != document.getElementById('inputFileId' + i).files.length) {
+            image = document.getElementById('inputFileId' + i).files[0].name;
+        }
+        questions.push( { "question": question, "answers": answers, "correct": correct, "image": image } )
     }
     
     var quiz = {id: 0, "name": name, "questions": questions};
@@ -69,18 +74,19 @@ function addQuestion(){
     var correctLabel = document.createElement('label');
     var correctField = document.createElement('input');
     
-    questionLabel.innerHTML = "Question " + String(questionNum) + ": Kuvan lisääminen kysymyksen perään seuraavassa muodossa: image:xxx.jpg";
+    questionLabel.innerHTML = "Question " + String(questionNum);
     questionField.setAttribute('class', 'question');
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');
     
     imageForm.setAttribute('id','uploadForm' + String(questionNum));
-    imageForm.setAttribute('action','/uploadfile');
+    imageForm.setAttribute('action','/uploadimage');
     imageForm.setAttribute('enctype','multipart/form-data');
     imageForm.setAttribute('method','POST');
 
     fileField.setAttribute('type','file');
-    fileField.setAttribute('name','myFile');
+    fileField.setAttribute('name','myImage');
+    fileField.setAttribute('id','inputFileId' + String(questionNum));
 
     uploadFileButton.setAttribute('onclick','uploadFileButtonPressed(' + String(questionNum) + ')');
     uploadFileButton.innerHTML = "Upload a file"

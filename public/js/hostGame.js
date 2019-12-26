@@ -24,7 +24,7 @@ socket.on('gameQuestions', function(data){
     document.getElementById('questionNum').innerHTML = "Kysymys " + String(data.questionNum) + " / " + String(data.numberOfQuestions);
 
     var questionStr = data.q1
-    if(data.q1.includes('image:')){
+    /*if(data.q1.includes('image:')){
         console.log("here we go")
         var n = data.q1.indexOf("image:");
         questionStr = data.q1.substr(0,n) 
@@ -36,8 +36,18 @@ socket.on('gameQuestions', function(data){
         //elem.setAttribute("width", "1024");
         elem.setAttribute("src", "http://localhost:3000/uploads/" + imgStr);
         document.getElementById("questionImg").appendChild(elem);
+    }*/
+    if("" != data.image){
+        console.log("here we go")
+        var elem = document.createElement("img");
+        elem.setAttribute("id", "questionImg2");
+        //elem.setAttribute("height", "768");
+        //elem.setAttribute("width", "1024");
+        elem.setAttribute("src", "http://localhost:3000/photobyname/" + data.image);
+        document.getElementById("questionImg").appendChild(elem);
     }
-    document.getElementById('question').innerHTML = questionStr;
+    //document.getElementById('question').innerHTML = questionStr;
+    document.getElementById('question').innerHTML = data.q1;
     document.getElementById('answer1').innerHTML = data.a1;
     document.getElementById('answer2').innerHTML = data.a2;
     document.getElementById('answer3').innerHTML = data.a3;
