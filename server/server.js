@@ -150,7 +150,8 @@ io.on('connection', (socket) => {
                 if(result[0] !== undefined){
                     var gamePin = Math.floor(Math.random()*90000) + 10000; //new pin for game
 
-                    games.addGame(gamePin, socket.id, false, {playersAnswered: 0, questionLive: false, gameid: data.id, question: 1}); //Creates a game with pin and host id
+                    //Creates a game with pin and host id
+                    games.addGame(gamePin, socket.id, false, {playersAnswered: 0, questionLive: false, gameid: data.id, question: 1}, {q1: "", a1: "", a2: "", a3: "", a4: ""});
 
                     var game = games.getGame(socket.id); //Gets the game data
 
@@ -219,16 +220,22 @@ io.on('connection', (socket) => {
                         numberOfQuestions: res[0].questions.length
                     });
 
+                    game.firstQuestion.q1 = question;
+                    game.firstQuestion.a1 = answer1;
+                    game.firstQuestion.a2 = answer2;
+                    game.firstQuestion.a3 = answer3;
+                    game.firstQuestion.a4 = answer4;
+
                     io.to(game.pin).emit('gameStartedPlayer');
 
-                    for(var i = 0; i < Object.keys(players.players).length; i++){
+                    /*for(var i = 0; i < Object.keys(players.players).length; i++){
                         io.to(game.pin).emit('gameQuestionToPlayer', {q: question,
                             a1: answer1,
                             a2: answer2,
                             a3: answer3,
                             a4: answer4}
                         );
-                    }
+                    }*/
                     db.close();
                 });
             });
@@ -282,7 +289,13 @@ io.on('connection', (socket) => {
             player.playerId = socket.id;//Update player id with socket id
             
             var playerData = players.getPlayers(game.hostId);
-            socket.emit('playerGameData', playerData);
+            socket.emit('playerGameData', { playerData: playerData, 
+                                            q1: game.firstQuestion.q1,
+                                            a1: game.firstQuestion.a1,
+                                            a2: game.firstQuestion.a2,
+                                            a3: game.firstQuestion.a3,
+                                            a4: game.firstQuestion.a4 
+                                          } );
         }else{
             socket.emit('noGameFound');//No player found
         }
