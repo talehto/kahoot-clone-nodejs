@@ -53,12 +53,6 @@ socket.on('answerResult', function(data){
 socket.on('gameQuestionToPlayer', function(data){
     console.log("gameQuestionToPlayer called")
 
-    /*var questionStr = data.q
-    if(data.q.includes('image:')){
-        var n = data.q.indexOf("image:");
-        questionStr = data.q.substr(0,n); 
-    }*/
-
     document.getElementById('gameStatsCard').style.display = "none";
     document.getElementById('question').innerHTML = data.q;
     document.getElementById('answer1').innerHTML = data.a1;

@@ -174,6 +174,11 @@ io.on('connection', (socket) => {
     
     //When the host connects from the game view
     socket.on('host-join-game', (data) => {
+        var question = '';
+        var answer1 = '';
+        var answer2 = '';
+        var answer3 = '';
+        var answer4 = '';
         var oldHostId = data.id;
         var game = games.getGame(oldHostId);//Gets game with old host id
         if(game){
@@ -194,11 +199,11 @@ io.on('connection', (socket) => {
                 dbo.collection("kahootGames").find(query).toArray(function(err, res) {
                     if (err) throw err;
                     
-                    var question = res[0].questions[0].question;
-                    var answer1 = res[0].questions[0].answers[0];
-                    var answer2 = res[0].questions[0].answers[1];
-                    var answer3 = res[0].questions[0].answers[2];
-                    var answer4 = res[0].questions[0].answers[3];
+                    question = res[0].questions[0].question;
+                    answer1 = res[0].questions[0].answers[0];
+                    answer2 = res[0].questions[0].answers[1];
+                    answer3 = res[0].questions[0].answers[2];
+                    answer4 = res[0].questions[0].answers[3];
                     var correctAnswer = res[0].questions[0].correct;
                     var imageName = res[0].questions[0].image;
                     
