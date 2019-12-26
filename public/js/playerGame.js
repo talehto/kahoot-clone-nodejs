@@ -12,11 +12,11 @@ socket.on('connect', function() {
     socket.emit('player-join-game', params);
     
     document.getElementById('gameStatsCard').style.display = "none";
-    document.getElementById('question').style.display = "block";
-    document.getElementById('answer1').style.display = "block";
-    document.getElementById('answer2').style.display = "block";
-    document.getElementById('answer3').style.display = "block";
-    document.getElementById('answer4').style.display = "block";
+    document.getElementById('question').style.display = "none";
+    document.getElementById('answer1').style.display = "none";
+    document.getElementById('answer2').style.display = "none";
+    document.getElementById('answer3').style.display = "none";
+    document.getElementById('answer4').style.display = "none";
 });
 
 socket.on('noGameFound', function(){
@@ -59,6 +59,12 @@ socket.on('gameQuestionToPlayer', function(data){
     document.getElementById('answer2').innerHTML = data.a2;
     document.getElementById('answer3').innerHTML = data.a3;
     document.getElementById('answer4').innerHTML = data.a4;
+
+    document.getElementById('question').style.display = "block";
+    document.getElementById('answer1').style.display = "block";
+    document.getElementById('answer2').style.display = "block";
+    document.getElementById('answer3').style.display = "block";
+    document.getElementById('answer4').style.display = "block";
 });
 
 socket.on('questionOver', function(data){
