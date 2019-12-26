@@ -218,6 +218,9 @@ io.on('connection', (socket) => {
                         questionNum: 1,
                         numberOfQuestions: res[0].questions.length
                     });
+
+                    io.to(game.pin).emit('gameStartedPlayer');
+
                     for(var i = 0; i < Object.keys(players.players).length; i++){
                         io.to(game.pin).emit('gameQuestionToPlayer', {q: question,
                             a1: answer1,
@@ -230,7 +233,6 @@ io.on('connection', (socket) => {
                 });
             });
 
-            io.to(game.pin).emit('gameStartedPlayer');
             game.gameData.questionLive = true;
         }else{
             socket.emit('noGameFound');//No game was found, redirect user
