@@ -6,6 +6,8 @@ var timer;
 
 var time = 20;
 
+var appUrl = "https://tarmo-kahoot.herokuapp.com" || process.env.APP_URL
+
 //When host connects to server
 socket.on('connect', function() {
     
@@ -23,30 +25,15 @@ socket.on('gameQuestions', function(data){
     document.getElementById('top10listCollapseCard').className = "collapse bg-light text-dark col-12";
     document.getElementById('questionNum').innerHTML = "Kysymys " + String(data.questionNum) + " / " + String(data.numberOfQuestions);
 
-    var questionStr = data.q1
-    /*if(data.q1.includes('image:')){
-        console.log("here we go")
-        var n = data.q1.indexOf("image:");
-        questionStr = data.q1.substr(0,n) 
-        var imgStr = data.q1.substr(n+6,data.q1.len)
-        console.log("imgStr: " + imgStr)
-        var elem = document.createElement("img");
-        elem.setAttribute("id", "questionImg2");
-        //elem.setAttribute("height", "768");
-        //elem.setAttribute("width", "1024");
-        elem.setAttribute("src", "http://localhost:3000/uploads/" + imgStr);
-        document.getElementById("questionImg").appendChild(elem);
-    }*/
     if("" != data.image){
         console.log("here we go")
         var elem = document.createElement("img");
         elem.setAttribute("id", "questionImg2");
         //elem.setAttribute("height", "768");
         //elem.setAttribute("width", "1024");
-        elem.setAttribute("src", "http://localhost:3000/photobyname/" + data.image);
+        elem.setAttribute("src",  appUrl + "/photobyname/" + data.image);
         document.getElementById("questionImg").appendChild(elem);
     }
-    //document.getElementById('question').innerHTML = questionStr;
     document.getElementById('question').innerHTML = data.q1;
     document.getElementById('answer1').innerHTML = data.a1;
     document.getElementById('answer2').innerHTML = data.a2;
@@ -204,10 +191,6 @@ socket.on('GameOver', function(data){
 
     $("#top10list").empty();
     var top10List  = document.getElementById("top10list");
-    //var top10ListCard  = document.getElementById("top10ListCard");
-    //var top10Header = document.createElement("h2");
-    //top10Header.innerHTML = "10 parasta pelaajaa";
-    //top10ListCard.appendChild(top10Header);
 
     for(var i = 0; i < 10; i++){
         if(i === data.players.length){
@@ -219,12 +202,6 @@ socket.on('GameOver', function(data){
         top10List.appendChild(newItem);
     }
     document.getElementById('top10listCollapseCard').className = "collapse show bg-light text-dark col-12";
-
-    /*document.getElementById('winner1').innerHTML = "1. " + data.num1;
-    document.getElementById('winner2').innerHTML = "2. " + data.num2;
-    document.getElementById('winner3').innerHTML = "3. " + data.num3;
-    document.getElementById('winner4').innerHTML = "4. " + data.num4; 
-    document.getElementById('winner5').innerHTML = "5. " + data.num5;*/
 });
 
 
