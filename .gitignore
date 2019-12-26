@@ -3,3 +3,4 @@ public/uploads
 
 # dependencies
 /node_modules
+*.jpg
