@@ -93,7 +93,7 @@ app.post('/uploadimage', upload.single('myImage'), (req, res, next) => {
 app.get('/photobyname/:name', (req, res, next) => {
 var filename = req.params.name;
 
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(mongoDbUrl, function(err, db) {
         if (err) throw err;
         var dbo = db.db("heroku_3zqkgxjm");
         dbo.collection('kahootGamesImages').findOne({'name': filename }, (err, result) => {
