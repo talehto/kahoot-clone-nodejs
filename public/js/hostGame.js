@@ -6,8 +6,6 @@ var timer;
 
 var time = 20;
 
-var appUrl = "https://tarmo-kahoot.herokuapp.com" || process.env.APP_URL
-
 //When host connects to server
 socket.on('connect', function() {
 
@@ -33,7 +31,7 @@ socket.on('gameQuestions', function(data){
         elem.setAttribute("id", "questionImg2");
         //elem.setAttribute("height", "768");
         //elem.setAttribute("width", "1024");
-        elem.setAttribute("src",  appUrl + "/photobyname/" + data.image);
+        elem.setAttribute("src",  "../../photobyname/" + data.image);
         document.getElementById("questionImg").appendChild(elem);
     }
     document.getElementById('question').innerHTML = data.q1;
