@@ -2,6 +2,8 @@ class LiveGames {
     constructor () {
         this.games = [];
     }
+    
+    //First name is a hack to prevent situation wherein user does not get question and answers to his/her view.
     addGame(pin, hostId, gameLive, gameData, firstQuestion){
         var game = {pin, hostId, gameLive, gameData, firstQuestion};
         this.games.push(game);

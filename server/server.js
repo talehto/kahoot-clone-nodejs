@@ -375,7 +375,7 @@ io.on('connection', (socket) => {
                     //Checks if all players answered
                     if(game.gameData.playersAnswered == playerNum.length){
                         game.gameData.questionLive = false; //Question has been ended bc players all answered under time
-                        players.sortPlayersByScore();
+                        //players.sortPlayersByScore();
                         var playerData = players.getPlayers(game.hostId);
                         io.to(game.pin).emit('questionOver', playerData, correctAnswer);//Tell everyone that question is over
                     }else{
@@ -412,6 +412,16 @@ io.on('connection', (socket) => {
         var playerid = data.player;
         var player = players.getPlayer(playerid);
         player.gameData.score += time;
+
+        var hostId = player.hostId;
+        var game = games.getGame(hostId);
+        //Sorting players by score when all playyers has answered
+        //or question time has expired.
+        if(game.gameData.questionLive == false){
+            players.sortPlayersByScore();
+            var playerData = players.getPlayers(game.hostId);
+            socket.emit('updateTopRanking',playerData);
+        }
     });
         
     socket.on('timeUp', function(){
@@ -431,7 +441,7 @@ io.on('connection', (socket) => {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
                     io.to(game.pin).emit('questionOver', playerData, correctAnswer);
-                    
+                    socket.emit('updateTopRanking',playerData);
                     db.close();
                 });
             });

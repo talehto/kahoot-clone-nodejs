@@ -113,11 +113,11 @@ socket.on('questionOver', function(playerData, correct){
     document.getElementById('square1').style.height = answer1 + "px";
     document.getElementById('square2').style.height = answer2 + "px";
     document.getElementById('square3').style.height = answer3 + "px";
-    document.getElementById('square4').style.height = answer4 + "px";
-    
-    document.getElementById('nextQButton').style.display = "block";
+    document.getElementById('square4').style.height = answer4 + "px";    
+});
 
-    console.log("playerData.name: " + playerData[0].name);
+socket.on('updateTopRanking', function(playerData){
+    document.getElementById('nextQButton').style.display = "block";
     $("#top10list").empty();
 
     var top10List  = document.getElementById("top10list");
