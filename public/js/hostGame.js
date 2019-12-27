@@ -10,6 +10,8 @@ var appUrl = "https://tarmo-kahoot.herokuapp.com" || process.env.APP_URL
 
 //When host connects to server
 socket.on('connect', function() {
+
+    document.getElementById('backRefDiv').style.display = "none";
     
     //Tell server that it is host connection from game view
     socket.emit('host-join-game', params);
@@ -126,10 +128,27 @@ socket.on('questionOver', function(playerData, correct){
         if(i === playerData.length){
             break;
         }
-        var newItem = document.createElement("li");
-        newItem.setAttribute('class', 'list-group-item');
-        newItem.innerHTML = "" + String(i + 1) + ". " + playerData[i].name;
-        top10List.appendChild(newItem);
+        var liItem = document.createElement("li");
+        liItem.setAttribute('class', 'list-group-item m-1');
+
+        var divItem = document.createElement("div");
+        divItem.setAttribute('class', 'd-flex w-100 justify-content-between');
+
+        var h5Item = document.createElement("h5");
+        h5Item.setAttribute('class', 'm-1');
+
+        var strongItem1 = document.createElement("strong");
+        strongItem1.innerHTML = "" + String(i+1) + ". " + playerData[i].name
+
+        var strongItem2 = document.createElement("strong");
+        strongItem2.innerHTML = "Pisteet: " + String(playerData[i].gameData.score);
+
+        h5Item.appendChild(strongItem1);
+        divItem.appendChild(h5Item);
+        divItem.appendChild(strongItem2);
+        liItem.appendChild(divItem);
+
+        top10List.appendChild(liItem);
     }
     document.getElementById('showTop10Button').style.display = "block";
 });
@@ -168,6 +187,7 @@ function updateTimer(){
     }, 1000);
 }
 socket.on('GameOver', function(data){
+    document.getElementById('backRefDiv').style.display = "block";
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('showTop10Button').style.display = "none";
     document.getElementById('top10listCollapseCard').className = "collapse bg-light text-dark col-12";
@@ -196,10 +216,27 @@ socket.on('GameOver', function(data){
         if(i === data.players.length){
             break;
         }
-        var newItem = document.createElement("li");
-        newItem.setAttribute('class', 'list-group-item');
-        newItem.innerHTML = "" + String(i + 1) + ". " + data.players[i].name;
-        top10List.appendChild(newItem);
+        var liItem = document.createElement("li");
+        liItem.setAttribute('class', 'list-group-item m-1');
+
+        var divItem = document.createElement("div");
+        divItem.setAttribute('class', 'd-flex w-100 justify-content-between');
+
+        var h5Item = document.createElement("h5");
+        h5Item.setAttribute('class', 'm-1');
+
+        var strongItem1 = document.createElement("strong");
+        strongItem1.innerHTML = "" + String(i+1) + ". " + data.players[i].name
+
+        var strongItem2 = document.createElement("strong");
+        strongItem2.innerHTML = "Pisteet: " + String(data.players[i].gameData.score);
+
+        h5Item.appendChild(strongItem1);
+        divItem.appendChild(h5Item);
+        divItem.appendChild(strongItem2);
+        liItem.appendChild(divItem);
+
+        top10List.appendChild(liItem);
     }
     document.getElementById('top10listCollapseCard').className = "collapse show bg-light text-dark col-12";
 });

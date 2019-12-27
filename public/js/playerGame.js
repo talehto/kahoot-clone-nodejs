@@ -134,6 +134,8 @@ socket.on('GameOver', function(){
     document.getElementById('answer4').style.display = "none";
     document.getElementById('message').className = "alert alert-light";
     document.getElementById('message').style.display = "block";
+    document.getElementById('backToMainPageButton').className = 'btn btn-primary';
+    document.getElementById('backToMainPageButton').style.display = "block";
     document.getElementById('message').innerHTML = "GAME OVER";
 });
 
