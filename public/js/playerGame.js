@@ -116,10 +116,10 @@ socket.on('playerGameData', function(data){
     document.getElementById('answer3').innerHTML = data.a3;
     document.getElementById('answer4').innerHTML = data.a4;
 
-   for(var i = 0; i < data.length; i++){
-       if(data[i].playerId == socket.id){
-           document.getElementById('nameText').innerHTML = "Name: " + data[i].name;
-           document.getElementById('scoreText').innerHTML = "Score: " + data[i].gameData.score;
+   for(var i = 0; i < data.playerData.length; i++){
+       if(data.playerData[i].playerId == socket.id){
+           document.getElementById('nameText').innerHTML = "Name: " + data.playerData[i].name;
+           document.getElementById('scoreText').innerHTML = "Score: " + data.playerData[i].gameData.score;
        }
    }
 });
