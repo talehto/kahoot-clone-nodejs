@@ -32,6 +32,13 @@ function answerSubmitted(num){
         
         //Hiding buttons from user
         document.getElementById('gameStatsCard').style.display = "block";
+
+        document.getElementById('question').innerHTML = "";
+        document.getElementById('answer1').innerHTML = "";
+        document.getElementById('answer2').innerHTML = "";
+        document.getElementById('answer3').innerHTML = "";
+        document.getElementById('answer4').innerHTML = "";
+
         document.getElementById('question').style.display = "none";
         document.getElementById('answer1').style.display = "none";
         document.getElementById('answer2').style.display = "none";
