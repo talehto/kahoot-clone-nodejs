@@ -88,6 +88,11 @@ socket.on('questionOver', function(data){
     document.getElementById('answer3').style.display = "none";
     document.getElementById('answer4').style.display = "none";
 
+    //socket.emit('getScore');
+});
+
+socket.on('updateTopRanking', function(data){
+    console.log("updateTopRanking called");
     socket.emit('getScore');
 });
 

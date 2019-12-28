@@ -49,6 +49,7 @@ socket.on('updatePlayersAnswered', function(data){
 });
 
 socket.on('questionOver', function(playerData, correct){
+    console.log("Executing questionOver")
     clearInterval(timer);
     var answer1 = 0;
     var answer2 = 0;

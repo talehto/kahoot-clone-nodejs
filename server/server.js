@@ -415,12 +415,13 @@ io.on('connection', (socket) => {
 
         var hostId = player.hostId;
         var game = games.getGame(hostId);
-        //Sorting players by score when all playyers has answered
+        //Sorting players by score when all players has answered
         //or question time has expired.
         if(game.gameData.questionLive == false){
             players.sortPlayersByScore();
             var playerData = players.getPlayers(game.hostId);
-            socket.emit('updateTopRanking',playerData);
+            //socket.emit('updateTopRanking',playerData);
+            io.to(game.pin).emit('updateTopRanking',playerData);
         }
     });
         
