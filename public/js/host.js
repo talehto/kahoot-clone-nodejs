@@ -18,7 +18,8 @@ socket.on('showGamePin', function(data){
 socket.on('updatePlayerLobby', function(data){
     
     document.getElementById('players').value = "";
-    
+    document.getElementById('numberOfParticipants').innerHTML = "Osallistujen lukumäärä: " + String(data.length);
+
     for(var i = 0; i < data.length; i++){
         document.getElementById('players').value += data[i].name + "\n";
     }

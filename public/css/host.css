@@ -38,6 +38,12 @@ body {
     font-family: 'Tajawal', sans-serif;
     font-size: 50px;
 }
+#numberOfParticipants{
+    color:white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
 #players{
     display: block;
     margin-left: auto;
