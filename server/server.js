@@ -259,8 +259,7 @@ io.on('connection', (socket) => {
                 console.log('Player connected to game');
                 
                 var hostId = games.games[i].hostId; //Get the id of host of game
-                
-                
+                                
                 players.addPlayer(hostId, socket.id, params.name, {score: 0, answer: 0}); //add player to game
                 
                 socket.join(params.pin); //Player is joining room based on pin
@@ -441,8 +440,11 @@ io.on('connection', (socket) => {
                 dbo.collection("kahootGames").find(query).toArray(function(err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
+                    players.sortPlayersByScore();
+                    playerData = players.getPlayers(game.hostId);
                     io.to(game.pin).emit('questionOver', playerData, correctAnswer);
-                    socket.emit('updateTopRanking',playerData);
+                    //socket.emit('updateTopRanking',playerData);
+                    io.to(game.pin).emit('updateTopRanking',playerData);
                     db.close();
                 });
             });
