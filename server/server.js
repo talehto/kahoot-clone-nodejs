@@ -377,6 +377,12 @@ io.on('connection', (socket) => {
                         //players.sortPlayersByScore();
                         var playerData = players.getPlayers(game.hostId);
                         io.to(game.pin).emit('questionOver', playerData, correctAnswer);//Tell everyone that question is over
+                        //Managing last answer is incorrect.
+                        if(num != correctAnswer){
+                            players.sortPlayersByScore();
+                            var playerData = players.getPlayers(game.hostId);
+                            io.to(game.pin).emit('updateTopRanking',playerData);
+                        }
                     }else{
                         //update host screen of num players answered
                         io.to(game.pin).emit('updatePlayersAnswered', {
@@ -419,7 +425,6 @@ io.on('connection', (socket) => {
         if(game.gameData.questionLive == false){
             players.sortPlayersByScore();
             var playerData = players.getPlayers(game.hostId);
-            //socket.emit('updateTopRanking',playerData);
             io.to(game.pin).emit('updateTopRanking',playerData);
         }
     });
